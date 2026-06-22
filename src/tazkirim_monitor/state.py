@@ -23,6 +23,14 @@ class NotificationState:
             )
             """
         )
+        self._conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS empty_notifications (
+                reference_date TEXT PRIMARY KEY,
+                notified_at TEXT NOT NULL
+            )
+            """
+        )
         self._conn.commit()
 
     def was_notified(self, record_id: str) -> bool:
@@ -51,6 +59,24 @@ class NotificationState:
 
     def filter_new(self, results: list[SearchResult]) -> list[SearchResult]:
         return [result for result in results if not self.was_notified(result.record_id)]
+
+    def was_empty_notified(self, reference_date: date) -> bool:
+        row = self._conn.execute(
+            "SELECT 1 FROM empty_notifications WHERE reference_date = ?",
+            (reference_date.isoformat(),),
+        ).fetchone()
+        return row is not None
+
+    def mark_empty_notified(self, reference_date: date) -> None:
+        self._conn.execute(
+            """
+            INSERT OR REPLACE INTO empty_notifications
+            (reference_date, notified_at)
+            VALUES (?, ?)
+            """,
+            (reference_date.isoformat(), datetime.utcnow().isoformat(timespec="seconds")),
+        )
+        self._conn.commit()
 
     def close(self) -> None:
         self._conn.close()

@@ -8,6 +8,7 @@ Monitor [tazkirim.gov.il](https://www.tazkirim.gov.il/) for new legislation rela
 2. Collects matching documents from search results.
 3. Keeps only items whose **publication date (`תאריך הפצה`) is today** in `Asia/Jerusalem`.
 4. Sends one ntfy notification per new item (deduplicated in SQLite).
+5. If nothing was published today, sends once per day: `לא נמצאו תקנות חדשות להיום` with the date.
 
 ## Requirements
 
@@ -74,7 +75,7 @@ Debug screenshot after the last query:
 - תקנות מקורות האנרגיה
 - טעינת רכב חשמלי
 - לרכב חשמלי
-- טעינת רכבים חשמיללים
+- טעינת רכבים חשמליים
 - רכב חשמלי
 
 Override via `.env`:
@@ -114,6 +115,22 @@ Optional self-hosted server:
 NTFY_SERVER=https://ntfy.example.com
 ```
 
+## GitHub Actions
+
+Runs daily at **08:00 Asia/Jerusalem** via [`.github/workflows/monitor.yml`](.github/workflows/monitor.yml).
+
+### One-time setup
+
+1. In the repo: **Settings → Secrets and variables → Actions → New repository secret**
+2. Name: `NTFY_TOPIC`
+3. Value: `PH_Notifications` (or your topic name)
+
+### Manual run
+
+**Actions** → **Tazkirim Monitor** → **Run workflow**
+
+The workflow caches `data/state.db` between runs so notifications are not duplicated.
+
 ## Configuration reference
 
 | Variable | Default | Description |
@@ -124,7 +141,7 @@ NTFY_SERVER=https://ntfy.example.com
 | `LOG_LEVEL` | `INFO` | Logging level |
 | `STATE_DB_PATH` | `./data/state.db` | SQLite dedupe database |
 | `SEARCH_QUERIES` | built-in list | Comma-separated search terms |
-| `SEND_HEARTBEAT` | `false` | Send ntfy when no new items |
+| `SEND_HEARTBEAT` | `false` | Legacy optional heartbeat |
 | `PAGE_LOAD_TIMEOUT_MS` | `60000` | Playwright timeout |
 | `SEARCH_WAIT_MS` | `12000` | Wait after submitting search |
 | `MAX_LOAD_MORE_CLICKS` | `20` | Max pagination clicks per query |

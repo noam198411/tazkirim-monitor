@@ -73,8 +73,12 @@ def run(settings: Settings, args: argparse.Namespace) -> int:
             notifier.notify_item(result)
             state.mark_notified(result)
 
-        if settings.send_heartbeat and not new_results:
-            notifier.notify_heartbeat(len(results), 0)
+        if only_today and not results and not state.was_empty_notified(reference_date):
+            notifier.notify_no_results(reference_date)
+            state.mark_empty_notified(reference_date)
+
+        if settings.send_heartbeat and not new_results and results:
+            notifier.notify_heartbeat(len(results), len(new_results))
 
     return 0
 

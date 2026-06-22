@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import time
+from datetime import date
 
 import httpx
 
@@ -57,6 +58,18 @@ class NtfyNotifier:
         }
         self._post(payload)
         logger.info("Sent ntfy notification for %s", result.record_id)
+
+    def notify_no_results(self, reference_date: date) -> None:
+        formatted_date = reference_date.strftime("%d/%m/%Y")
+        payload = {
+            "topic": self._settings.ntfy_topic,
+            "title": "תזכירים - אין חדש",
+            "message": f"לא נמצאו תקנות חדשות להיום\n{formatted_date}",
+            "tags": ["tazkirim", "empty"],
+            "priority": 2,
+        }
+        self._post(payload)
+        logger.info("Sent no-results notification for %s", formatted_date)
 
     def notify_heartbeat(self, matched_count: int, sent_count: int) -> None:
         payload = {
