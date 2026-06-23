@@ -2,9 +2,8 @@ name: Tazkirim Monitor
 
 on:
   schedule:
-    # Daily at 14:00 Israel time. Keep this cron stable — frequent edits can break registration.
-    - cron: "0 14 * * *"
-      timezone: Asia/Jerusalem
+    # Every 10 minutes. Keep this cron stable — frequent edits can break registration.
+    - cron: "*/10 * * * *"
   workflow_dispatch:
     inputs:
       force_notify:

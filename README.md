@@ -117,7 +117,7 @@ NTFY_SERVER=https://ntfy.example.com
 
 ## GitHub Actions
 
-Runs daily at **14:00 Israel time** (`Asia/Jerusalem`) via [`.github/workflows/monitor.yml`](.github/workflows/monitor.yml).
+Runs every **10 minutes** via [`.github/workflows/monitor.yml`](.github/workflows/monitor.yml).
 
 ### One-time setup
 
