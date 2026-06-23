@@ -117,9 +117,9 @@ NTFY_SERVER=https://ntfy.example.com
 
 ## GitHub Actions
 
-Runs daily at **08:29 Israel time (05:29 UTC)** via [`.github/workflows/monitor.yml`](.github/workflows/monitor.yml).
+Runs daily at **08:05 Israel time (05:05 UTC)** via [`.github/workflows/monitor.yml`](.github/workflows/monitor.yml).
 
-> GitHub scheduled workflows often delay or skip jobs at exactly `:00`. The cron uses UTC and runs at minute 5 to improve reliability.
+A temporary **every-15-minutes** cron is also enabled to verify scheduling works — remove it from the workflow after confirmation.
 
 ### One-time setup
 
@@ -127,7 +127,16 @@ Runs daily at **08:29 Israel time (05:29 UTC)** via [`.github/workflows/monitor.
 2. Name: `NTFY_TOPIC`
 3. Value: `PH_Notifications` (or your topic name)
 
-### Manual run
+### If scheduled runs never appear
+
+Check these in order:
+
+1. **Actions → Tazkirim Monitor** — if you see *"This scheduled workflow is disabled"*, click **Enable workflow**
+2. **Settings → Actions → General** — ensure *Allow all actions* is selected
+3. **Do not change the cron repeatedly** — GitHub needs a stable schedule; constant edits can prevent runs
+4. Look for event **`schedule`** in the run list (not `workflow_dispatch`)
+
+### Manual run (always works)
 
 **Actions** → **Tazkirim Monitor** → **Run workflow**
 

@@ -2,14 +2,19 @@ name: Tazkirim Monitor
 
 on:
   schedule:
-    # 05:52 UTC = 08:52 Israel (IDT) — test slot; change back after verifying.
-    - cron: "52 5 * * *"
+    # 05:05 UTC = 08:05 Israel (IDT). Do not change frequently — GitHub needs a stable cron.
+    - cron: "5 5 * * *"
+    # Temporary: every 15 minutes to verify schedule is active. Remove after confirmed working.
+    - cron: "*/15 * * * *"
   workflow_dispatch:
     inputs:
       force_notify:
         description: Send notification even if already sent today (for manual testing)
         type: boolean
         default: true
+
+permissions:
+  contents: read
 
 jobs:
   monitor:
@@ -51,7 +56,7 @@ jobs:
           STATE_DB_PATH: ./data/state.db
         run: |
           ARGS=""
-          if [ "${{ inputs.force_notify }}" = "true" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force_notify }}" = "true" ]; then
             ARGS="--force-empty-notify"
           fi
           python -m tazkirim_monitor $ARGS
