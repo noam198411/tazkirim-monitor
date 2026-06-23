@@ -117,7 +117,7 @@ NTFY_SERVER=https://ntfy.example.com
 
 ## GitHub Actions
 
-Runs daily at **08:05 Israel time (05:05 UTC)** via [`.github/workflows/monitor.yml`](.github/workflows/monitor.yml).
+Runs daily at **08:29 Israel time (05:29 UTC)** via [`.github/workflows/monitor.yml`](.github/workflows/monitor.yml).
 
 > GitHub scheduled workflows often delay or skip jobs at exactly `:00`. The cron uses UTC and runs at minute 5 to improve reliability.
 
