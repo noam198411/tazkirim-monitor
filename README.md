@@ -117,9 +117,7 @@ NTFY_SERVER=https://ntfy.example.com
 
 ## GitHub Actions
 
-Runs daily at **08:05 Israel time (05:05 UTC)** via [`.github/workflows/monitor.yml`](.github/workflows/monitor.yml).
-
-A temporary **every-15-minutes** cron is also enabled to verify scheduling works — remove it from the workflow after confirmation.
+Runs daily at **14:00 Israel time** (`Asia/Jerusalem`) via [`.github/workflows/monitor.yml`](.github/workflows/monitor.yml).
 
 ### One-time setup
 
